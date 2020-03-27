@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string.h>
+#include <string>
 
 FILE * fin;
 
@@ -15,6 +16,12 @@ struct Node{
     }
 };
 
+
+struct words_struct{
+    int head;
+    std::string word;
+};
+
 bool vectorContains( std::vector<int> myvec, int number ){
     for (std::vector<int>::iterator it = myvec.begin() ; it != myvec.end(); ++it){
         if ( *it == number ){
@@ -24,10 +31,12 @@ bool vectorContains( std::vector<int> myvec, int number ){
     return false;
 }
 
-void printVector( std::vector<int> myvec ){
-    for (std::vector<int>::iterator it = myvec.begin() ; it != myvec.end(); ++it)
-        printf("%d ",*it);
-    puts("");
+
+
+void printVector( std::vector<words_struct> myvec ){
+    for (std::vector<words_struct>::iterator it = myvec.begin() ; it != myvec.end(); ++it)
+        printf("%d %s\n",it->head,it->word.c_str());
+    puts("-end\n");
 }
 
 bool checkIfStatesContainFinishingState( Node nodes[], std::vector<int> myvec ){
@@ -81,10 +90,13 @@ int main(){
     char word[1000];
     fscanf(fin,"%s",&word);
 
-    std::vector<int> currentStates;
-    currentStates.push_back(initialState);
+    std::vector<words_struct> currentStates;
+    words_struct init;
+    init.head = initialState;
+    init.word = "";
+    currentStates.push_back(init);
 
-    std::vector<int> nextStates;
+    std::vector<words_struct> nextStates;
 
     puts("Current states:");
     printVector(currentStates);
@@ -92,14 +104,20 @@ int main(){
     for ( int i = 0; i < strlen(word); i++ ){
         nextStates.clear();
         // iterate through current states
-        for (std::vector<int>::iterator it = currentStates.begin() ; it != currentStates.end(); ++it){
+        for (std::vector<words_struct>::iterator it = currentStates.begin() ; it != currentStates.end(); ++it){
             // iterate through current state next states on every possible character
+            int head = it->head;
             for ( int C = 0; C < strlen(letters); C++ ) {
-                for( std::vector<int>::iterator it2 = nodes[*it].m[letters[C]].begin(); it2 != nodes[*it].m[letters[C]].end(); ++it2 ){
-                    printf("Jump %d -> %d by %c\n", *it, *it2, letters[C]);
-                    if ( ! vectorContains(nextStates, *it2) ){
-                        nextStates.push_back(*it2);
-                    }
+                for( std::vector<int>::iterator it2 = nodes[head].m[letters[C]].begin(); it2 != nodes[head].m[letters[C]].end(); ++it2 ){
+                    printf("Jump %d -> %d by %c\n", it->head, *it2, letters[C]);
+                    words_struct s;
+                    s.head = *it2;
+                    s.word = it->word + letters[C];
+                    nextStates.push_back(s);
+                    //return 0;
+                    //if ( ! vectorContains(nextStates, *it2) ){
+                        //nextStates.push_back(*it2);
+                    //}
                 }
             }
         }
@@ -110,10 +128,12 @@ int main(){
         printVector(currentStates);
     }
 
+/*
     if ( checkIfStatesContainFinishingState( nodes, currentStates ) ) {
         printf("Cuvantul '%s' este acceptat!\n", word);
     } else {
         printf("Cuvantul '%s' NU este acceptat!\n", word);
     }
+    */
     return 0;
 }
