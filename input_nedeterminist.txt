@@ -1,4 +1,4 @@
-4
+5
 9
 4 4 c
 4 4 b
@@ -14,7 +14,7 @@
 2 4 5
 5
 abcaa
-abcaa
-abcaa
-abcaa
-abcaa
+b
+ab
+aa
+acbbbb

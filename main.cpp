@@ -125,6 +125,8 @@ int main(){
 
         if ( checkIfStatesContainFinishingState( nodes, currentStates ) ) {
             printf("Cuvantul %s este acceptat!\n", word);
+        }else {
+            printf("Cuvantul %s NU este acceptat!\n", word);
         }
     }
 
