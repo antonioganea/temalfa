@@ -19,37 +19,6 @@ struct Node{
     }
 };
 
-char word[] = "abcaa";
-
-void printAccepted( int pos ){
-    for ( int i = 0; i < pos; i++ ){
-        printf("%c",word[i]);
-    }
-    puts("");
-}
-
-void launch( Node nodes[], int currentNode, int windex ){
-
-    //printf("Current node : %d\n",currentNode);
-
-    if ( nodes[currentNode].finalState == true ){
-        //printf("Accepted : state %d - windex %d\n",currentNode,windex);
-        printAccepted(windex);
-    }
-
-    //printf("Current litera : %s\n",currentChar);
-    std::vector<int> * myvec = &(nodes[currentNode].m[word[windex]]);
-
-    for (std::vector<int>::iterator it = myvec->begin() ; it != myvec->end(); ++it){
-        //printf("=%d    ",*it);
-
-        //if ( word[windex+1] != '\0' ){
-            launch(nodes,*it,windex+1);
-        //}
-    }
-
-}
-
 bool vectorContains( std::vector<int> myvec, int number ){
     for (std::vector<int>::iterator it = myvec.begin() ; it != myvec.end(); ++it){
         if ( *it == number ){
@@ -65,12 +34,23 @@ void printVector( std::vector<int> myvec ){
     puts("");
 }
 
+bool checkIfStatesContainFinishingState( Node nodes[], std::vector<int> myvec ){
+    for (std::vector<int>::iterator it = myvec.begin() ; it != myvec.end(); ++it) {
+        if ( nodes[*it].finalState ) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 int main(){
 
     fin = fopen( "input_nedeterminist.txt", "r" );
 
     int states, transitions;
+
+
 
     fscanf(fin,"%d%d",&states,&transitions);
     printf("%d %d\n\n",states,transitions);
@@ -102,40 +82,50 @@ int main(){
         nodes[temp].finalState = true;
     }
 
-    //puts("Accepted values:");
-    //launch( nodes, initialState, 0);
+    int words;
+    fscanf(fin,"%d",&words);
 
-    std::vector<int> currentStates;
-    currentStates.push_back(initialState);
+    for ( int currentWord = 0; currentWord < words; currentWord++ ){
 
-    std::vector<int> nextStates;
+        char word[1000];
+        fscanf(fin,"%s",&word);
 
-    puts("Current states:");
-    printVector(currentStates);
+        std::vector<int> currentStates;
+        currentStates.push_back(initialState);
 
-    for ( int i = 0; i < strlen(word); i++ ){//strlen(word)
-        //printf("%c",word[i]);
-
-        nextStates.clear();
-        // iterate through current states
-        for (std::vector<int>::iterator it = currentStates.begin() ; it != currentStates.end(); ++it){
-            //printf("=%d\n",*it);
-
-            // iterate through current state next states on current character
-            for( std::vector<int>::iterator it2 = nodes[*it].m[word[i]].begin(); it2 != nodes[*it].m[word[i]].end(); ++it2 ){
-                //printf("%d ",*it2);
-
-                if ( ! vectorContains(nextStates, *it2) ){
-                    nextStates.push_back(*it2);
-                }
-
-            }
-        }
-        currentStates.clear();
-        currentStates.assign(nextStates.begin(), nextStates.end());
+        std::vector<int> nextStates;
 
         puts("Current states:");
         printVector(currentStates);
+
+        for ( int i = 0; i < strlen(word); i++ ){//strlen(word)
+            //printf("%c",word[i]);
+
+            nextStates.clear();
+            // iterate through current states
+            for (std::vector<int>::iterator it = currentStates.begin() ; it != currentStates.end(); ++it){
+                //printf("=%d\n",*it);
+
+                // iterate through current state next states on current character
+                for( std::vector<int>::iterator it2 = nodes[*it].m[word[i]].begin(); it2 != nodes[*it].m[word[i]].end(); ++it2 ){
+                    //printf("%d ",*it2);
+
+                    if ( ! vectorContains(nextStates, *it2) ){
+                        nextStates.push_back(*it2);
+                    }
+
+                }
+            }
+            currentStates.clear();
+            currentStates.assign(nextStates.begin(), nextStates.end());
+
+            puts("Current states:");
+            printVector(currentStates);
+        }
+
+        if ( checkIfStatesContainFinishingState( nodes, currentStates ) ) {
+            printf("Cuvantul %s este acceptat!\n", word);
+        }
     }
 
     return 0;
