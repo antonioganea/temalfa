@@ -101,8 +101,8 @@ int main(){
 
     std::vector<words_struct> nextStates;
 
-    puts("Current states:");
-    printVector(currentStates);
+    // puts("Current states:");
+    // printVector(currentStates);
 
     for ( int i = 0; i < strlen(word); i++ ){
         nextStates.clear();
@@ -112,7 +112,7 @@ int main(){
             int head = it->head;
             for ( int C = 0; C < strlen(letters); C++ ) {
                 for( std::vector<int>::iterator it2 = nodes[head].m[letters[C]].begin(); it2 != nodes[head].m[letters[C]].end(); ++it2 ){
-                    printf("Jump %d -> %d by %c\n", it->head, *it2, letters[C]);
+                    // printf("Jump %d -> %d by %c\n", it->head, *it2, letters[C]);
                     words_struct s;
                     s.head = *it2;
                     s.word = it->word + letters[C];
@@ -130,8 +130,8 @@ int main(){
         currentStates.clear();
         currentStates.assign(nextStates.begin(), nextStates.end());
 
-        puts("Current states:");
-        printVector(currentStates);
+        // puts("Current states:");
+        // printVector(currentStates);
     }
 
 /*
