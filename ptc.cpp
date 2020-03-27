@@ -116,7 +116,7 @@ int main(){
     bool generate = true;
     int generated = 0;
 
-    int toGenerate = 10;
+    int toGenerate = 100;
 
     printf("Generating first %d numbers!\n",toGenerate);
 
