@@ -88,8 +88,6 @@ int main(){
         printf("%d %d %c\n",a,b,c);
     }
 
-
-
     int initialState;
 
     fscanf(fin,"%d",&initialState);
@@ -103,8 +101,6 @@ int main(){
         fscanf(fin,"%d",&temp);
         nodes[temp].finalState = true;
     }
-
-
 
     //puts("Accepted values:");
     //launch( nodes, initialState, 0);
@@ -125,8 +121,6 @@ int main(){
         for (std::vector<int>::iterator it = currentStates.begin() ; it != currentStates.end(); ++it){
             //printf("=%d\n",*it);
 
-
-
             // iterate through current state next states on current character
             for( std::vector<int>::iterator it2 = nodes[*it].m[word[i]].begin(); it2 != nodes[*it].m[word[i]].end(); ++it2 ){
                 //printf("%d ",*it2);
@@ -136,43 +130,13 @@ int main(){
                 }
 
             }
-            //puts("");
-
         }
         currentStates.clear();
         currentStates.assign(nextStates.begin(), nextStates.end());
 
         puts("Current states:");
         printVector(currentStates);
-
-
-        //puts("\n");
-
     }
-
-
-
-    /**
-
-    nedeterminist :
-
-    4
-    9
-    4 4 c
-    4 4 b
-    4 5 c
-    0 1 a
-    0 3 a
-    1 2 b
-    2 2 a
-    2 2 c
-    3 4 c
-    0
-    3
-    2 4 5
-
-    */
-
 
     return 0;
 }
