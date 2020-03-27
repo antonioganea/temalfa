@@ -5,6 +5,7 @@
 #include <map>
 #include <string.h>
 #include <string>
+#include <set>
 
 FILE * fin;
 
@@ -48,8 +49,15 @@ bool checkIfStatesContainFinishingState( Node nodes[], std::vector<int> myvec ){
     return false;
 }
 
-void accept(std::string word){
+std::set< std::string > accepted;
+
+int accept(std::string word){
+    if (accepted.count(word)!=0){
+        return 0;
+    }
+    accepted.insert(word);
     printf("Accepted : %s\n", word.c_str());
+    return 1;
 }
 
 int main(){
@@ -127,13 +135,11 @@ int main(){
                     nextStates.push_back(s);
                     if ( nodes[s.head].finalState ){
                         if (generated < toGenerate)
-                            accept( s.word );
+                            generated += accept( s.word );
                         else
                         {
                             generate = false;
                         }
-                        
-                        generated++;
                     }
                     //return 0;
                     //if ( ! vectorContains(nextStates, *it2) ){
