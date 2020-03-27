@@ -96,6 +96,7 @@ int main(){
             // iterate through current state next states on every possible character
             for ( int C = 0; C < strlen(letters); C++ ) {
                 for( std::vector<int>::iterator it2 = nodes[*it].m[letters[C]].begin(); it2 != nodes[*it].m[letters[C]].end(); ++it2 ){
+                    printf("Jump %d -> %d by %c\n", *it, *it2, letters[C]);
                     if ( ! vectorContains(nextStates, *it2) ){
                         nextStates.push_back(*it2);
                     }
