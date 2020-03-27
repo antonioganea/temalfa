@@ -104,7 +104,15 @@ int main(){
     // puts("Current states:");
     // printVector(currentStates);
 
-    for ( int i = 0; i < strlen(word); i++ ){
+
+    bool generate = true;
+    int generated = 0;
+
+    int toGenerate = 10;
+
+    printf("Generating first %d numbers!\n",toGenerate);
+
+    while ( generate ) {
         nextStates.clear();
         // iterate through current states
         for (std::vector<words_struct>::iterator it = currentStates.begin() ; it != currentStates.end(); ++it){
@@ -118,7 +126,14 @@ int main(){
                     s.word = it->word + letters[C];
                     nextStates.push_back(s);
                     if ( nodes[s.head].finalState ){
-                        accept( s.word );
+                        if (generated < toGenerate)
+                            accept( s.word );
+                        else
+                        {
+                            generate = false;
+                        }
+                        
+                        generated++;
                     }
                     //return 0;
                     //if ( ! vectorContains(nextStates, *it2) ){
