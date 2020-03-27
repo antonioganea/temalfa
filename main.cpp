@@ -1,3 +1,5 @@
+// Antonio-Alexandru Ganea // Grupa 135 // Tema LFA - Cazurile a) b) // Automat determinist/nedeterminist
+
 #include <stdio.h>
 #include <vector>
 #include <map>
@@ -10,12 +12,6 @@ struct Node{
     bool finalState;
     Node(){
         finalState = false;
-    }
-    void printLinks(char stuff){
-        for (std::vector<int>::iterator it = m[stuff].begin() ; it != m[stuff].end(); ++it)
-            printf("=%d    ",*it);
-        puts("");
-            //std::cout << ' ' << *it;
     }
 };
 
@@ -45,15 +41,10 @@ bool checkIfStatesContainFinishingState( Node nodes[], std::vector<int> myvec ){
 
 
 int main(){
-
     fin = fopen( "input_nedeterminist.txt", "r" );
 
     int states, transitions;
-
-
-
     fscanf(fin,"%d%d",&states,&transitions);
-    printf("%d %d\n\n",states,transitions);
 
     Node nodes[states+1];
 
@@ -65,7 +56,6 @@ int main(){
 
         // din a in b prin c
         nodes[a].m[c].push_back(b);
-        printf("%d %d %c\n",a,b,c);
     }
 
     int initialState;
@@ -95,40 +85,32 @@ int main(){
 
         std::vector<int> nextStates;
 
-        puts("Current states:");
-        printVector(currentStates);
+        // puts("Current states:");
+        // printVector(currentStates);
 
-        for ( int i = 0; i < strlen(word); i++ ){//strlen(word)
-            //printf("%c",word[i]);
-
+        for ( int i = 0; i < strlen(word); i++ ){
             nextStates.clear();
             // iterate through current states
             for (std::vector<int>::iterator it = currentStates.begin() ; it != currentStates.end(); ++it){
-                //printf("=%d\n",*it);
-
                 // iterate through current state next states on current character
                 for( std::vector<int>::iterator it2 = nodes[*it].m[word[i]].begin(); it2 != nodes[*it].m[word[i]].end(); ++it2 ){
-                    //printf("%d ",*it2);
-
                     if ( ! vectorContains(nextStates, *it2) ){
                         nextStates.push_back(*it2);
                     }
-
                 }
             }
             currentStates.clear();
             currentStates.assign(nextStates.begin(), nextStates.end());
 
-            puts("Current states:");
-            printVector(currentStates);
+            // puts("Current states:");
+            // printVector(currentStates);
         }
 
         if ( checkIfStatesContainFinishingState( nodes, currentStates ) ) {
-            printf("Cuvantul %s este acceptat!\n", word);
-        }else {
-            printf("Cuvantul %s NU este acceptat!\n", word);
+            printf("Cuvantul '%s' este acceptat!\n", word);
+        } else {
+            printf("Cuvantul '%s' NU este acceptat!\n", word);
         }
     }
-
     return 0;
 }
