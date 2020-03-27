@@ -48,6 +48,9 @@ bool checkIfStatesContainFinishingState( Node nodes[], std::vector<int> myvec ){
     return false;
 }
 
+void accept(std::string word){
+    printf("Accepted : %s\n", word.c_str());
+}
 
 int main(){
     fin = fopen( "input_nedeterminist.txt", "r" );
@@ -114,6 +117,9 @@ int main(){
                     s.head = *it2;
                     s.word = it->word + letters[C];
                     nextStates.push_back(s);
+                    if ( nodes[s.head].finalState ){
+                        accept( s.word );
+                    }
                     //return 0;
                     //if ( ! vectorContains(nextStates, *it2) ){
                         //nextStates.push_back(*it2);
